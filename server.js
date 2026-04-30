@@ -252,7 +252,8 @@ app.get('/widget.js', (req, res) => {
   res.sendFile(__dirname + '/widget.js');
 });
 
-app.use('/demo', express.static(__dirname + '/demo'));
+app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
+app.get('/demo', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.get('/', (req, res) => res.redirect('/demo'));
 
 // ─── REST API ──────────────────────────────────────────────────────────────
