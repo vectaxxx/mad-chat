@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mad Chat — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: #F2F2F7;
+      min-height: 100vh;
+      color: #1C1C1E;
+    }
+
+    /* Fake site navbar */
+    .navbar {
+      background: white;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .nav-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #FF4081, #FF1744);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: #8E8E93;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover, .nav-link.active { color: #1C1C1E; }
+
+    /* Hero */
+    .hero {
+      padding: 80px 40px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,23,68,0.08);
+      color: #FF1744;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #FF4081, #FF1744);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #6E6E73;
+      margin-bottom: 32px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-red {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #FF4081, #FF1744);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-red:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-ghost {
+      padding: 14px 28px;
+      background: white;
+      color: #1C1C1E;
+      border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: 14px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-ghost:hover { background: #F2F2F7; }
+
+    /* Pricing cards (fake content for demo) */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      color: #6E6E73;
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      border: 1.5px solid rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .card.popular {
+      border-color: #FF1744;
+      box-shadow: 0 4px 24px rgba(255,23,68,0.12);
+    }
+    .card-popular-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, #FF4081, #FF1744);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #8E8E93;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .card-price {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+    .card-price sup { font-size: 20px; vertical-align: top; margin-top: 8px; }
+    .card-period { font-size: 13px; color: #8E8E93; margin-bottom: 24px; }
+    .card-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .card-features li { font-size: 14px; color: #3A3A3C; display: flex; align-items: center; gap: 8px; }
+    .card-features li::before { content: '✓'; color: #FF1744; font-weight: 700; }
+
+    /* Dev panel */
+    .dev-panel {
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      z-index: 9990;
+      width: 220px;
+      font-size: 13px;
+    }
+    .dev-panel h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #8E8E93;
+      margin-bottom: 12px;
+    }
+    .dev-btn {
+      width: 100%;
+      padding: 9px 12px;
+      margin-bottom: 6px;
+      border: 1.5px solid rgba(0,0,0,0.08);
+      border-radius: 10px;
+      background: white;
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .dev-btn:hover { background: #F2F2F7; }
+    .dev-btn.red { border-color: #FF1744; color: #FF1744; }
+    .dev-status {
+      margin-top: 10px;
+      padding: 8px;
+      background: #F2F2F7;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #6E6E73;
+      font-family: monospace;
+    }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 40px 20px; }
+      .hero h1 { font-size: 32px; }
+      .cards { grid-template-columns: 1fr; }
+      .section { padding: 40px 20px; }
+      .dev-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fake site for demo -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">⚡</div>
+      MadService
+    </div>
+    <div class="nav-links">
+      <a href="#" class="nav-link active">Главная</a>
+      <a href="#pricing" class="nav-link">Тарифы</a>
+      <a href="#" class="nav-link">О нас</a>
+      <a href="#" class="nav-link">Блог</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <div class="hero-tag">🚀 Новинка 2026</div>
+      <h1>Сервис для<br><span>умного бизнеса</span></h1>
+      <p>Управляйте клиентами, заказами и аналитикой в одном месте. Попробуйте бесплатно — 14 дней без ограничений.</p>
+      <div class="hero-cta">
+        <button class="btn-red">Начать бесплатно</button>
+        <button class="btn-ghost">Демо</button>
+      </div>
+    </div>
+    <div style="background:white;border-radius:24px;padding:32px;box-shadow:0 8px 40px rgba(0,0,0,0.08);">
+      <div style="height:200px;background:#F2F2F7;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#8E8E93;font-size:14px;">
+        📊 Дашборд аналитики
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="pricing">
+    <div class="section-title">Тарифы</div>
+    <div class="section-sub">Выберите подходящий план для вашего бизнеса</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-name">Старт</div>
+        <div class="card-price"><sup>$</sup>9</div>
+        <div class="card-period">в месяц</div>
+        <ul class="card-features">
+          <li>До 100 клиентов</li>
+          <li>Базовая аналитика</li>
+          <li>Email поддержка</li>
+        </ul>
+        <button class="btn-ghost" style="width:100%">Выбрать</button>
+      </div>
+      <div class="card popular">
+        <div class="card-popular-badge">Популярный</div>
+        <div class="card-name">Профи</div>
+        <div class="card-price"><sup>$</sup>29</div>
+        <div class="card-period">в месяц</div>
+        <ul class="card-features">
+          <li>До 1000 клиентов</li>
+          <li>Расширенная аналитика</li>
+          <li>Приоритетная поддержка</li>
+          <li>API доступ</li>
+        </ul>
+        <button class="btn-red" style="width:100%">Выбрать</button>
+      </div>
+      <div class="card">
+        <div class="card-name">Бизнес</div>
+        <div class="card-price"><sup>$</sup>99</div>
+        <div class="card-period">в месяц</div>
+        <ul class="card-features">
+          <li>Неограниченно</li>
+          <li>White-label</li>
+          <li>Выделенный менеджер</li>
+          <li>SLA 99.9%</li>
+        </ul>
+        <button class="btn-ghost" style="width:100%">Выбрать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dev control panel -->
+  <div class="dev-panel">
+    <h3>🛠 Dev Panel</h3>
+    <button class="dev-btn" onclick="window.MadChat?.open()">Открыть чат</button>
+    <button class="dev-btn" onclick="window.MadChat?.close()">Закрыть чат</button>
+    <button class="dev-btn red" onclick="window.MadChat?.trigger('Привет! Вижу, вы изучаете наши тарифы. Могу помочь выбрать лучший вариант 👀')">
+      ⚡ Trigger proactive
+    </button>
+    <div class="dev-status" id="dev-status">Подключение...</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       Mad Chat Widget
+       ══════════════════════════════════════════════════════ -->
+  <script>
+    // Конфигурация виджета
+    window.MadChat = {
+      serverUrl: window.location.origin,
+      agentName: 'Алексей',
+
+      // Пример авторизованного пользователя
+      // Убери этот блок — и пользователь станет анонимным
+      user: {
+        id: 'usr_demo_123',
+        name: 'Иван Петров',
+        email: 'ivan@example.com',
+        balance: 1240.00,
+        currency: 'USD',
+        status: 'Premium',
+        orders: 12,
+      }
+    };
+  </script>
+  <script src="/widget.js"></script>
+
+  <script>
+    // Dev panel status updater
+    function updateStatus() {
+      const el = document.getElementById('dev-status');
+      if (!el) return;
+      const ws = window._madWs;
+      const states = ['Connecting...', '✅ Connected', 'Connecting...', '❌ Closed'];
+      // Просто показываем состояние через небольшой хак
+      el.textContent = document.querySelector('#mad-chat-root') ? '✅ Widget loaded' : '⏳ Loading...';
+    }
+    setTimeout(updateStatus, 1000);
+    setInterval(updateStatus, 3000);
+  </script>
+
+</body>
+</html>

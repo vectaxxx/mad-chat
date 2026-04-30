@@ -1,0 +1,20 @@
+{
+  "name": "mad-chat-server",
+  "version": "1.0.0",
+  "description": "Mad Chat — real-time chat widget backend with Slack integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@slack/events-api": "^3.0.1",
+    "@slack/web-api": "^7.0.0",
+    "express": "^4.18.2",
+    "uuid": "^9.0.0",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
