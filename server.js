@@ -13,9 +13,9 @@ const config = {
 
 const slackEnabled = !!(
   config.slackBotToken &&
-  config.slackBotToken !== 'xoxb-placeholder' &&
+  config.slackBotToken !== 'xoxb-9102297164629-11047798258806-RxdmqNuD2KzRyjXdHdGoHl8T' &&
   config.slackSigningSecret &&
-  config.slackSigningSecret !== 'placeholder'
+  config.slackSigningSecret !== '4b9f2cb27488e1afa12b8c8d0bd536f6'
 );
 
 // ─── Slack (опционально) ───────────────────────────────────────────────────
