@@ -40,8 +40,6 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-app.use(express.json());
-
 // ─── Session Store ─────────────────────────────────────────────────────────
 const sessions = new Map();
 const threadToSession = new Map();
@@ -245,6 +243,12 @@ if (slackEnabled && slackEvents) {
   slackEvents.on('error', (err) => console.error('[Slack Events]', err.message));
 }
 
+// ─── Body parser (after Slack events!) ────────────────────────────────────────
+app.use((req, res, next) => {
+  if (req.path === '/slack/events') return next();
+  express.json()(req, res, next);
+});
+
 // ─── Static files ──────────────────────────────────────────────────────────
 app.get('/widget.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
@@ -254,7 +258,6 @@ app.get('/widget.js', (req, res) => {
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.get('/demo', (req, res) => res.sendFile(__dirname + '/index.html'));
-app.get('/', (req, res) => res.redirect('/demo'));
 
 // ─── REST API ──────────────────────────────────────────────────────────────
 
